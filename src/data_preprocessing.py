@@ -205,6 +205,10 @@ class TrafficDataPreprocessor:
         if categorical_cols is None:
             categorical_cols = ['weather_main', 'time_of_day', 'season', 'event_type', 'event_size']
         
+        # Drop original holiday column (we created is_holiday boolean)
+        if 'holiday' in df.columns:
+            df = df.drop('holiday', axis=1)
+        
         # One-hot encoding
         print(f"  One-hot encoding: {categorical_cols}")
         df = pd.get_dummies(df, columns=categorical_cols, drop_first=True)

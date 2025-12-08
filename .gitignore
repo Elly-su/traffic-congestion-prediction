@@ -76,3 +76,8 @@ coverage.xml
 
 # mypy
 .mypy_cache/
+
+# Utility scripts (not needed in repo)
+init_git.bat
+convert_to_word.py
+

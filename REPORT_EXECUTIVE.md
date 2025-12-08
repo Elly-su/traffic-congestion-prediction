@@ -299,5 +299,3 @@ The methodology transfers seamlessly to multiple domains:
 **For detailed technical analysis, see the comprehensive 30-page report (REPORT.md)**
 
 ---
-
-*Report prepared for educational purposes demonstrating end-to-end data science workflow for intermediate-level students.*

@@ -16,6 +16,29 @@ python src/model_training.py
 python src/model_evaluation.py
 ```
 
+## 📈 Visualizations
+
+### Traffic Patterns
+
+![Traffic by Hour](visualizations/traffic_by_hour.png)
+*Peak traffic occurs at 8 AM and 5 PM during rush hours*
+
+![Weekly Patterns](visualizations/traffic_by_weekday.png)
+*Weekday traffic is 30% higher than weekends*
+
+### Model Performance
+
+![Model Comparison](visualizations/regression_comparison.png)
+*Random Forest achieves best performance with R² = 0.75*
+
+![Feature Importance](visualizations/feature_importance_random_forest_regression.png)
+*Top features: Rolling mean (24h), Previous hour traffic, Hour of day*
+
+### Classification Results
+
+![Confusion Matrix](visualizations/confusion_matrices.png)
+*Classification confusion matrices showing 82% overall accuracy*
+
 ## 📊 Key Results
 
 - **Best Regression Model**: Random Forest (R² = 0.75, RMSE = 620)

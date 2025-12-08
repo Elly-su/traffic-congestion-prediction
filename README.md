@@ -70,7 +70,6 @@ traffic_congestion_prediction/
 
 ## 📖 Documentation
 
-- **QUICKSTART.md** - Step-by-step execution guide
 - **REPORT_EXECUTIVE.md** - 5-page executive summary
 - **REPORT.md** - Comprehensive 30-page technical report
 

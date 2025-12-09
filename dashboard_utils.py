@@ -156,52 +156,86 @@ def create_prediction_input(dt, temp, precip, weather_main, holiday, event_type,
     # Weather features
     weather = create_weather_features(temp, precip, weather_main)
     
-    # Combine all features - matching exact training data structure
+    # CRITICAL: Features must be in EXACT order as training data
+    # Training column order (excluding date_time, traffic_volume, congestion_level*):
+    # temp,rain_1h,snow_1h,clouds_all,temperature_2m,precipitation,windspeed_10m,cloudcover,
+    # expected_attendance,hour,day_of_week,day_of_month,month,year,week_of_year,is_weekend,
+    # is_holiday,is_rush_hour,temp_celsius,total_precipitation,bad_weather,traffic_prev_hour,
+    # traffic_prev_day,traffic_prev_week,traffic_rolling_mean_6h,traffic_rolling_std_6h,
+    # traffic_rolling_mean_24h,weather_main_Clouds,weather_main_Partly Cloudy,weather_main_Rain,
+    # weather_main_Snow,time_of_day_Morning,time_of_day_Afternoon,time_of_day_Evening,
+    # season_Spring,season_Summer,season_Fall,event_type_Conference,event_type_Fair,
+    # event_type_Festival,event_type_Sports,event_size_Medium,event_size_Small
+    
+    # Expected attendance
+    attendance_map = {'None': 0, 'Small': 2000, 'Medium': 10000}
+    expected_attendance = attendance_map.get(event_size, 0)
+    
+    # Build features in EXACT training order
     features = {
-        **temporal,
-        **weather,
+        # Weather features (from create_weather_features)
+        'temp': weather['temp'],
+        'rain_1h': weather['rain_1h'],
+        'snow_1h': weather['snow_1h'],
+        'clouds_all': weather['clouds_all'],
+        'temperature_2m': weather['temperature_2m'],
+        'precipitation': weather['precipitation'],
+        'windspeed_10m': weather['windspeed_10m'],
+        'cloudcover': weather['cloudcover'],
+        
+        # Event features
+        'expected_attendance': expected_attendance,
+        
+        # Temporal features (from create_temporal_features)
+        'hour': temporal['hour'],
+        'day_of_week': temporal['day_of_week'],
+        'day_of_month': temporal['day_of_month'],
+        'month': temporal['month'],
+        'year': temporal['year'],
+        'week_of_year': temporal['week_of_year'],
+        'is_weekend': temporal['is_weekend'],
         'is_holiday': 1 if holiday else 0,
+        'is_rush_hour': temporal['is_rush_hour'],
+        
+        # Additional weather features
+        'temp_celsius': weather['temp_celsius'],
+        'total_precipitation': weather['total_precipitation'],
+        'bad_weather': weather['bad_weather'],
+        
+        # Traffic history features
         'traffic_prev_hour': traffic_prev_hour,
         'traffic_prev_day': traffic_prev_day,
         'traffic_prev_week': traffic_prev_day,  # Approximation
         'traffic_rolling_mean_6h': traffic_prev_hour,
-        'traffic_rolling_std_6h': traffic_prev_hour * 0.2,  # Approximation
+        'traffic_rolling_std_6h': traffic_prev_hour * 0.2,
         'traffic_rolling_mean_24h': traffic_prev_day,
+        
+        # One-hot: weather_main (Clouds, Partly Cloudy, Rain, Snow)
+        'weather_main_Clouds': 1 if weather_main == 'Clouds' else 0,
+        'weather_main_Partly Cloudy': 1 if weather_main == 'Partly Cloudy' else 0,
+        'weather_main_Rain': 1 if weather_main == 'Rain' else 0,
+        'weather_main_Snow': 1 if weather_main == 'Snow' else 0,
+        
+        # One-hot: time_of_day (Morning, Afternoon, Evening)
+        'time_of_day_Morning': 1 if time_of_day == 'Morning' else 0,
+        'time_of_day_Afternoon': 1 if time_of_day == 'Afternoon' else 0,
+        'time_of_day_Evening': 1 if time_of_day == 'Evening' else 0,
+        
+        # One-hot: season (Spring, Summer, Fall)
+        'season_Spring': 1 if season == 'Spring' else 0,
+        'season_Summer': 1 if season == 'Summer' else 0,
+        'season_Fall': 1 if season == 'Fall' else 0,
+        
+        # One-hot: event_type (Conference, Fair, Festival, Sports)
+        'event_type_Conference': 1 if event_type == 'Conference' else 0,
+        'event_type_Fair': 1 if event_type == 'Fair' else 0,
+        'event_type_Festival': 1 if event_type == 'Festival' else 0,
+        'event_type_Sports': 1 if event_type == 'Sports' else 0,
+        
+        # One-hot: event_size (Medium, Small)
+        'event_size_Medium': 1 if event_size == 'Medium' else 0,
+        'event_size_Small': 1 if event_size == 'Small' else 0,
     }
-    
-    # One-hot encode weather - ONLY categories seen during training
-    # Training data has: Clouds, Partly Cloudy, Rain, Snow
-    weather_categories = ['Clouds', 'Partly Cloudy', 'Rain', 'Snow']
-    for cat in weather_categories:
-        features[f'weather_main_{cat}'] = 1 if weather_main == cat else 0
-    
-    # One-hot encode time of day - ONLY categories seen during training
-    # Training data has: Morning, Afternoon, Evening (no Night)
-    time_categories = ['Morning', 'Afternoon', 'Evening']
-    for cat in time_categories:
-        features[f'time_of_day_{cat}'] = 1 if time_of_day == cat else 0
-    
-    # One-hot encode season - ONLY categories seen during training
-    # Training data has: Spring, Summer, Fall (no Winter in training period)
-    season_categories = ['Spring', 'Summer', 'Fall']
-    for cat in season_categories:
-        features[f'season_{cat}'] = 1 if season == cat else 0
-    
-    # One-hot encode event types - ONLY categories seen during training
-    # Training data has: Conference, Fair, Festival, Sports (no Concert, no Large size)
-    event_type_categories = ['Conference', 'Fair', 'Festival', 'Sports']
-    for cat in event_type_categories:
-        features[f'event_type_{cat}'] = 1 if event_type == cat else 0
-    
-    # One-hot encode event sizes - ONLY categories seen during training
-    # Training data has: Medium, Small (no Large, no None as separate category)
-    event_size_categories = ['Medium', 'Small']
-    for cat in event_size_categories:
-        features[f'event_size_{cat}'] = 1 if event_size == cat else 0
-    
-    # Expected attendance based on event size
-    attendance_map = {'None': 0, 'Small': 2000, 'Medium': 10000}
-    features['expected_attendance'] = attendance_map.get(event_size, 0)
     
     return features
 

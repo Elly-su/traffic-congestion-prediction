@@ -23,7 +23,7 @@ This document provides comprehensive information about all datasets used in the 
 
 ### 📊 Source
 **Original Inspiration**: UCI Machine Learning Repository - Metro Interstate Traffic Volume Dataset  
-**URL**: https://archive.ics.uci.edu/ml/datasets/Metro+Interstate+Traffic+Volume
+**URL**: https://archive.ics.uci.edu/dataset/492/metro+interstate+traffic+volume
 
 **My Implementation**: Synthetic dataset generated to replicate UCI traffic patterns
 
@@ -262,7 +262,7 @@ python src/data_preprocessing.py   # Creates train/val/test splits
 ### UCI Dataset (Inspiration)
 ```
 Dua, D. and Graff, C. (2019). UCI Machine Learning Repository 
-[http://archive.ics.uci.edu/ml]. Irvine, CA: University of California, 
+[https://archive.ics.uci.edu]. Irvine, CA: University of California, 
 School of Information and Computer Science.
 
 Original dataset: Metro Interstate Traffic Volume

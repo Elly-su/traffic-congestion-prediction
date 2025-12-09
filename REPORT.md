@@ -2,7 +2,7 @@
 
 **Project**: Predicting Urban Traffic Congestion Using Data Science  
 **Date**: December 2025  
-**Course**: Data Science & Machine Learning  
+**Course**: BSC Data Science  
 
 ---
 

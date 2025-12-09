@@ -107,7 +107,7 @@ def create_weather_features(temp_celsius, precipitation, weather_main):
 def create_prediction_input(dt, temp, precip, weather_main, holiday, event_type, 
                             event_size, traffic_prev_hour=3500, traffic_prev_day=3500):
     """
-    Create feature vector for prediction
+    Create feature vector for prediction matching training data exactly
     
     Parameters:
     -----------
@@ -122,9 +122,9 @@ def create_prediction_input(dt, temp, precip, weather_main, holiday, event_type,
     holiday : bool
         Is it a holiday
     event_type : str
-        Type of event
+        Type of event (Conference, Fair, Festival, Sports, or None)
     event_size : str
-        Size of event
+        Size of event (Small, Medium, or None)
     traffic_prev_hour : float
         Traffic volume from previous hour (default: average)
     traffic_prev_day : float
@@ -137,7 +137,7 @@ def create_prediction_input(dt, temp, precip, weather_main, holiday, event_type,
     # Weather features
     weather = create_weather_features(temp, precip, weather_main)
     
-    # Combine all features
+    # Combine all features - matching exact training data structure
     features = {
         **temporal,
         **weather,
@@ -150,29 +150,38 @@ def create_prediction_input(dt, temp, precip, weather_main, holiday, event_type,
         'traffic_rolling_mean_24h': traffic_prev_day,
     }
     
-    # One-hot encode categorical variables
-    weather_categories = ['Clear', 'Clouds', 'Rain', 'Snow', 'Partly Cloudy']
+    # One-hot encode weather - ONLY categories seen during training
+    # Training data has: Clouds, Partly Cloudy, Rain, Snow
+    weather_categories = ['Clouds', 'Partly Cloudy', 'Rain', 'Snow']
     for cat in weather_categories:
         features[f'weather_main_{cat}'] = 1 if weather_main == cat else 0
     
-    time_categories = ['Afternoon', 'Evening', 'Morning', 'Night']
+    # One-hot encode time of day - ONLY categories seen during training
+    # Training data has: Morning, Afternoon, Evening (no Night)
+    time_categories = ['Morning', 'Afternoon', 'Evening']
     for cat in time_categories:
         features[f'time_of_day_{cat}'] = 1 if time_of_day == cat else 0
     
-    season_categories = ['Fall', 'Spring', 'Summer', 'Winter']
+    # One-hot encode season - ONLY categories seen during training
+    # Training data has: Spring, Summer, Fall (no Winter in training period)
+    season_categories = ['Spring', 'Summer', 'Fall']
     for cat in season_categories:
         features[f'season_{cat}'] = 1 if season == cat else 0
     
-    event_type_categories = ['Concert', 'Conference', 'Fair', 'Festival', 'None', 'Sports']
+    # One-hot encode event types - ONLY categories seen during training
+    # Training data has: Conference, Fair, Festival, Sports (no Concert, no Large size)
+    event_type_categories = ['Conference', 'Fair', 'Festival', 'Sports']
     for cat in event_type_categories:
         features[f'event_type_{cat}'] = 1 if event_type == cat else 0
     
-    event_size_categories = ['Large', 'Medium', 'None', 'Small']
+    # One-hot encode event sizes - ONLY categories seen during training
+    # Training data has: Medium, Small (no Large, no None as separate category)
+    event_size_categories = ['Medium', 'Small']
     for cat in event_size_categories:
         features[f'event_size_{cat}'] = 1 if event_size == cat else 0
     
-    # Expected attendance
-    attendance_map = {'None': 0, 'Small': 2000, 'Medium': 10000, 'Large': 30000}
+    # Expected attendance based on event size
+    attendance_map = {'None': 0, 'Small': 2000, 'Medium': 10000}
     features['expected_attendance'] = attendance_map.get(event_size, 0)
     
     return features

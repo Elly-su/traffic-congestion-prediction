@@ -81,7 +81,7 @@ Data Collection → Preprocessing → Feature Engineering → Model Training →
 **Tools**: Python, scikit-learn, pandas, numpy, matplotlib, seaborn  
 **Models**: Random Forest, Gradient Boosting, SVM, Ridge/Lasso, Logistic Regression
 
-**Code**: 5 Python modules (~2,030 lines) | **Visualizations**: 15 high-quality plots
+**Code**: 5 Python modules | **Visualizations**: 15 high-quality plots
 
 ---
 

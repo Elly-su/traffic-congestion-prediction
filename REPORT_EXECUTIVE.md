@@ -233,7 +233,7 @@ The methodology transfers seamlessly to multiple domains:
 **Models**: Random Forest, Gradient Boosting, SVM, Logistic Regression
 
 ### Code Structure
-**5 Python Modules** (~2,030 lines):
+**5 Python Modules**:
 - `data_collection.py`: API integration, data generation
 - `data_preprocessing.py`: Cleaning, feature engineering, splitting
 - `exploratory_analysis.py`: 8 visualization types, statistical analysis

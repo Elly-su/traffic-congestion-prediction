@@ -50,7 +50,7 @@ python src/model_evaluation.py
 
 ```
 traffic_congestion_prediction/
-├── src/                    # Python modules (~2,030 lines)
+├── src/                    # Python modules
 ├── data/                   # Raw and processed datasets
 ├── models/                 # Trained ML models
 ├── visualizations/         # Generated plots (15+ charts)

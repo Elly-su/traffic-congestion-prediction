@@ -60,11 +60,13 @@ def get_available_models():
 
 
 def create_temporal_features(dt):
-    """Create temporal features from datetime"""
+    """Create temporal features from datetime matching training data exactly"""
     features = {
         'hour': dt.hour,
         'day_of_week': dt.weekday(),
+        'day_of_month': dt.day,  # ADDED - required by model
         'month': dt.month,
+        'year': dt.year,  # ADDED - required by model
         'week_of_year': dt.isocalendar()[1],
         'is_weekend': 1 if dt.weekday() >= 5 else 0,
         'is_rush_hour': 1 if (7 <= dt.hour <= 9) or (16 <= dt.hour <= 19) else 0,
@@ -95,10 +97,27 @@ def create_temporal_features(dt):
 
 
 def create_weather_features(temp_celsius, precipitation, weather_main):
-    """Create weather-related features"""
+    """Create weather-related features matching training data exactly"""
+    # Approximate rain/snow split based on precip and weather
+    rain_1h = precipitation if weather_main in ['Rain', 'Partly Cloudy'] else 0
+    snow_1h = precipitation if weather_main == 'Snow' else 0
+    
+    # Cloud coverage approximation based on weather condition
+    clouds_map = {'Clouds': 75, 'Partly Cloudy': 50, 'Rain': 90, 'Snow': 90, 'Clear': 0}
+    clouds_all = clouds_map.get(weather_main, 50)
+    cloudcover = clouds_all  # Same as clouds_all
+    
     features = {
-        'temp_celsius': temp_celsius,
-        'total_precipitation': precipitation,
+        'temp': temp_celsius,  # Original temp column
+        'rain_1h': rain_1h,  # ADDED - required by model
+        'snow_1h': snow_1h,  # ADDED - required by model   
+        'clouds_all': clouds_all,  # ADDED - required by model
+        'temperature_2m': temp_celsius,  # ADDED - required by model (same as temp)
+        'precipitation': precipitation,  # ADDED - required by model
+        'windspeed_10m': 5.0,  # ADDED - required by model (default approximation)
+        'cloudcover': cloudcover,  # ADDED - required by model
+        'temp_celsius': temp_celsius,  # Keep original
+        'total_precipitation': precipitation,  # Keep original
         'bad_weather': 1 if precipitation > 0.5 else 0,
     }
     return features

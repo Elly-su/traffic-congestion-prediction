@@ -286,9 +286,9 @@ def show_prediction_page():
             # Convert to DataFrame
             features_df = pd.DataFrame([features_dict])
             
-            # Load best models
-            reg_model = load_model('models/random_forest_reg.pkl')
-            clf_model = load_model('models/random_forest_clf.pkl')
+            # Load models (using Gradient Boosting - smaller file, works without LFS)
+            reg_model = load_model('models/gradient_boosting_reg.pkl')
+            clf_model = load_model('models/logistic_regression_clf.pkl')
             
             if reg_model and clf_model:
                 # Make predictions

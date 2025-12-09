@@ -16,6 +16,23 @@ python src/model_training.py
 python src/model_evaluation.py
 ```
 
+## 🎮 Interactive Dashboard
+
+**NEW!** Launch the interactive web dashboard for real-time predictions and data exploration:
+
+```bash
+streamlit run app.py
+```
+
+**Dashboard Features:**
+- 🔮 **Make Predictions**: Enter conditions and get instant traffic forecasts
+- 📊 **Explore Data**: Interactive charts with filters and time series analysis
+- 🎯 **Model Performance**: Compare all models with visualizations
+- 💡 **Insights**: Key findings and actionable recommendations
+- 📱 **Responsive Design**: Modern UI with smooth interactions
+
+**Access at**: `http://localhost:8501` after running the command above
+
 ## 📈 Visualizations
 
 ### Traffic Patterns
@@ -50,6 +67,8 @@ python src/model_evaluation.py
 
 ```
 traffic_congestion_prediction/
+├── app.py                  # 🎮 Interactive Streamlit dashboard
+├── dashboard_utils.py      # Dashboard helper functions
 ├── src/                    # Python modules
 ├── data/                   # Raw and processed datasets
 ├── models/                 # Trained ML models

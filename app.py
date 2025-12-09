@@ -89,7 +89,7 @@ def show_home_page():
         with col1:
             st.metric(
                 label="🎯 Best R² Score",
-                value=f"{reg_results['R2_Score'].max():.3f}",
+                value=f"{reg_results['R² Score'].max():.3f}",
                 delta="Regression"
             )
         
@@ -157,11 +157,11 @@ def show_home_page():
             fig_reg = px.bar(
                 reg_results,
                 x='Model',
-                y='R2_Score',
+                y='R² Score',
                 title='Regression Models - R² Score',
-                color='R2_Score',
+                color='R² Score',
                 color_continuous_scale='blues',
-                text='R2_Score'
+                text='R² Score'
             )
             fig_reg.update_traces(texttemplate='%{text:.3f}', textposition='outside')
             fig_reg.update_layout(showlegend=False, height=400)
@@ -535,22 +535,22 @@ def show_model_performance():
         with col1:
             # Create metrics table
             st.dataframe(
-                reg_results.style.highlight_max(axis=0, subset=['R2_Score']).highlight_min(axis=0, subset=['RMSE', 'MAE']),
+                reg_results.style.highlight_max(axis=0, subset=['R² Score']).highlight_min(axis=0, subset=['RMSE', 'MAE']),
                 use_container_width=True
             )
         
         with col2:
             # Best model details
-            best_model = reg_results.loc[reg_results['R2_Score'].idxmax()]
+            best_model = reg_results.loc[reg_results['R² Score'].idxmax()]
             st.info(f"""
             **🏆 Best Regression Model: {best_model['Model']}**
             
-            - R² Score: {best_model['R2_Score']:.3f}
+            - R² Score: {best_model['R² Score']:.3f}
             - RMSE: {best_model['RMSE']:.2f} vehicles/hour
             - MAE: {best_model['MAE']:.2f} vehicles/hour
-            - MAPE: {best_model['MAPE']:.2f}%
+            - MAPE: {best_model['MAPE (%)']:.2f}%
             
-            **Interpretation**: The model explains {best_model['R2_Score']*100:.1f}% of variance 
+            **Interpretation**: The model explains {best_model['R² Score']*100:.1f}% of variance 
             in traffic volume with an average error of {best_model['RMSE']:.0f} vehicles/hour.
             """)
         
@@ -575,7 +575,7 @@ def show_model_performance():
             - Accuracy: {best_clf['Accuracy']:.2%}
             - Precision: {best_clf['Precision']:.2%}
             - Recall: {best_clf['Recall']:.2%}
-            - F1-Score: {best_clf['F1_Score']:.2%}
+            - F1-Score: {best_clf['F1-Score']:.2%}
             
             **Interpretation**: The model correctly classifies congestion level 
             in {best_clf['Accuracy']*100:.0f}% of cases.

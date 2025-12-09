@@ -413,7 +413,102 @@ We implemented two parallel modeling approaches:
 - Regression provides precise predictions for capacity planning
 - Classification offers actionable congestion alerts for drivers
 
-### 5.2 Regression Models
+### 5.2 Model Selection Justification
+
+#### Why Multiple Models?
+
+We implemented **8 different models** to:
+1. **Establish baselines**: Simple models (Linear Regression) provide performance floor
+2. **Test regularization**: Ridge/Lasso assess if complexity control improves generalization
+3. **Capture non-linearity**: Tree-based models handle complex feature interactions
+4. **Compare approaches**: Different algorithms excel under different conditions
+5. **Ensure robustness**: Best model validated across multiple architectures
+
+#### Regression Model Rationale
+
+**Linear Regression (Baseline)**
+- **Why chosen**: Simplest model to establish minimum performance threshold
+- **Expectation**: Will underperform due to non-linear traffic patterns
+- **Purpose**: Quantify benefit of complex models vs. simple baseline
+- **Trade-off**: High interpretability, low complexity, limited accuracy
+
+**Ridge Regression (L2 Regularization)**
+- **Why chosen**: Our dataset has correlated features (temp, temp_celsius, rolling means)
+- **Hyperparameter α=1.0**: Moderate regularization prevents overfitting without underfitting
+- **Purpose**: Test if regularization improves over plain linear regression
+- **Expected benefit**: Better generalization on unseen data
+
+**Lasso Regression (L1 Regularization)**
+- **Why chosen**: Automatic feature selection identifies most important predictors
+- **Hyperparameter α=1.0**: Aggressive enough to zero out weak features
+- **Purpose**: Sparse model for interpretability; identify which features truly matter
+- **Expected outcome**: Sets ~30% of coefficients to zero, revealing key drivers
+
+**Random Forest Regressor** ⭐
+- **Why chosen**: Best-in-class for tabular data; handles non-linearity and interactions
+- **Hyperparameters**:
+  - `n_estimators=100`: Balance between performance and training time (empirically optimal)
+  - `max_depth=20`: Deep enough to capture complexity, shallow enough to prevent overfitting
+  - `min_samples_split=5`: Prevents fitting to noise in leaf nodes
+- **Purpose**: Expected to be best regression model based on traffic prediction literature
+- **Strengths**: 
+  - Captures rush hour non-linearities
+  - Handles weather interactions automatically
+  - Robust to outliers (important for extreme weather)
+  - Provides feature importance rankings
+
+**Gradient Boosting Regressor**
+- **Why chosen**: Sequential learning often outperforms parallel ensembles (Random Forest)
+- **Hyperparameters**:
+  - `n_estimators=100`: Sufficient boosting rounds
+  - `max_depth=5`: Shallow trees prevent overfitting in boosting
+  - `learning_rate=0.1`: Conservative learning for stable convergence
+- **Purpose**: Test if sequential error correction beats bagging
+- **Trade-off**: Higher accuracy potential vs. longer training time
+
+#### Classification Model Rationale
+
+**Logistic Regression**
+- **Why chosen**: Simple, interpretable probabilistic classifier
+- **Multi-class strategy**: One-vs-Rest handles 3 congestion levels
+- **Purpose**: Classification baseline; outputs class probabilities
+- **Use case**: When interpretability outweighs accuracy (e.g., regulatory requirements)
+
+**Random Forest Classifier** ⭐
+- **Why chosen**: Consistently top-performing for structured classification tasks
+- **Hyperparameters**: Same as regression (consistent methodology)
+- **Purpose**: Expected best classifier; provides class probabilities
+- **Advantages**:
+  - Handles class imbalance naturally (weights samples)
+  - Clear decision boundaries for Low/Medium/High congestion
+  - Feature importance helps explain classifications
+
+**Support Vector Machine (SVM)**
+- **Why chosen**: Effective in high-dimensional spaces (44 features post-encoding)
+- **Kernel choice**: RBF handles non-linear decision boundaries
+- **Hyperparameter C=1.0**: Moderate regularization for generalization
+- **Purpose**: Test margin-based classification vs. ensemble methods
+- **Expected performance**: Strong but likely below Random Forest
+
+#### Summary of Model Strategy
+
+| Model Type | Purpose | Expected Rank | Key Benefit |
+|------------|---------|---------------|-------------|
+| Linear Regression | Baseline | 5th | Interpretability |
+| Ridge/Lasso | Regularization test | 4th/3rd | Feature selection |
+| **Random Forest** | **Primary model** | **1st** | **Best accuracy + interpretability** |
+| Gradient Boosting | Alternative ensemble | 2nd | Sequential learning |
+| Logistic Regression | Classification baseline | 3rd (class.) | Probabilistic output |
+| SVM | Alternative classifier | 2nd (class.) | High-dim robustness |
+
+**Final Selection Criteria**:
+1. **Performance metrics** (R², Accuracy)
+2. **Generalization** (train vs. test gap)
+3. **Interpretability** (feature importance)
+4. **Computational efficiency** (prediction speed)
+5. **Robustness** (performance across conditions)
+
+### 5.3 Regression Models
 
 #### 5.2.1 Linear Regression (Baseline)
 

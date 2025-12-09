@@ -23,7 +23,7 @@
 
 ### 🔍 Critical Insights
 
-####Traffic Patterns
+#### Traffic Patterns
 - **Peak Hours**: 8 AM (5,000 veh/hr) & 5 PM (5,200 veh/hr)
 - **Weekday vs Weekend**: 33% higher weekday traffic
 - **Busiest Day**: Thursday | **Quietest**: Sunday

@@ -286,9 +286,9 @@ def show_prediction_page():
             # Convert to DataFrame
             features_df = pd.DataFrame([features_dict])
             
-            # Load models (using Gradient Boosting - smaller file, works without LFS)
-            reg_model = load_model('models/gradient_boosting_reg.pkl')
-            clf_model = load_model('models/logistic_regression_clf.pkl')
+            # Load models (renamed to bypass Streamlit Cloud cache)
+            reg_model = load_model('models/gb_regression.pkl')
+            clf_model = load_model('models/lr_classification.pkl')
             
             if reg_model and clf_model:
                 # Make predictions

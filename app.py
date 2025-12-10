@@ -209,7 +209,8 @@ def show_prediction_page():
         
         pred_time = st.time_input(
             "Select Time",
-            value=datetime.now().time()
+            value=datetime.now().time(),
+            key="prediction_time"  # Add key to persist state
         )
         
         pred_datetime = datetime.combine(pred_date, pred_time)

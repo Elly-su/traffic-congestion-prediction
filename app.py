@@ -252,7 +252,10 @@ def show_prediction_page():
             options=['None', 'Small', 'Medium', 'Large']
         )
         
-        st.subheader("📊 Historical Context (Optional)")
+        
+        st.subheader("📊 Historical Context (🔑 Most Important!)")
+        
+        st.info("💡 **Tip:** Historical traffic values have the biggest impact on predictions (50%+ importance). Try changing these to see significant differences in results!")
         
         traffic_prev_hour = st.number_input(
             "Previous Hour Traffic (vehicles/hour)",
@@ -260,7 +263,7 @@ def show_prediction_page():
             max_value=8000,
             value=3500,
             step=100,
-            help="If unknown, leave at average value (3500)"
+            help="If unknown, leave at average value (3500). This is the #1 most important feature!"
         )
         
         traffic_prev_day = st.number_input(
@@ -269,7 +272,7 @@ def show_prediction_page():
             max_value=8000,
             value=3500,
             step=100,
-            help="If unknown, leave at average value (3500)"
+            help="If unknown, leave at average value (3500). This is the #2 most important feature!"
         )
     
     st.markdown("---")

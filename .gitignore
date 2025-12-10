@@ -40,8 +40,9 @@ env/
 data/raw/*.csv
 data/processed/*.csv
 
-# Model files (can be large)
-models/*.pkl
+# Model files (large files)
+# Note: Small models (< 100MB) are tracked for Streamlit deployment
+# models/*.pkl
 models/*.h5
 models/*.joblib
 

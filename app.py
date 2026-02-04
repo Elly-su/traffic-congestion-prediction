@@ -63,6 +63,108 @@ st.markdown("""
         padding: 10px 20px;
         font-weight: 600;
     }
+    
+    /* Enhanced Sidebar Styling */
+    [data-testid="stSidebar"] {
+        background: linear-gradient(180deg, #0e1117 0%, #1a1f2e 100%);
+    }
+    
+    /* Sidebar header */
+    .sidebar-header {
+        text-align: center;
+        padding: 1.5rem 0;
+        margin-bottom: 1rem;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-radius: 10px;
+        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+    }
+    
+    .sidebar-header h1 {
+        color: white;
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin: 0;
+        padding: 0;
+    }
+    
+    .sidebar-header p {
+        color: rgba(255, 255, 255, 0.9);
+        font-size: 0.85rem;
+        margin: 0.3rem 0 0 0;
+        padding: 0;
+    }
+    
+    /* Hide radio button circles */
+    [data-testid="stSidebar"] .row-widget.stRadio > div {
+        gap: 0.5rem;
+    }
+    
+    [data-testid="stSidebar"] .row-widget.stRadio > div[role="radiogroup"] > label {
+        background: linear-gradient(135deg, #2d3748 0%, #1a202c 100%);
+        padding: 0.75rem 1rem;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        border: 2px solid transparent;
+        margin-bottom: 0.5rem;
+        display: flex;
+        align-items: center;
+    }
+    
+    [data-testid="stSidebar"] .row-widget.stRadio > div[role="radiogroup"] > label:hover {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        transform: translateX(5px);
+        border-color: #667eea;
+        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+    }
+    
+    [data-testid="stSidebar"] .row-widget.stRadio > div[role="radiogroup"] > label[data-baseweb="radio"] > div:first-child {
+        display: none !important;
+    }
+    
+    [data-testid="stSidebar"] .row-widget.stRadio > div[role="radiogroup"] > label > div {
+        color: white !important;
+        font-weight: 500;
+        font-size: 1rem;
+    }
+    
+    /* Selected state */
+    [data-testid="stSidebar"] .row-widget.stRadio > div[role="radiogroup"] > label[data-checked="true"] {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-color: #a78bfa;
+        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.5);
+    }
+    
+    /* Sidebar text styling */
+    [data-testid="stSidebar"] h3 {
+        color: #a78bfa;
+        font-size: 1.1rem;
+        margin-top: 1.5rem;
+    }
+    
+    [data-testid="stSidebar"] p,
+    [data-testid="stSidebar"] li {
+        color: rgba(255, 255, 255, 0.8);
+        font-size: 0.9rem;
+        line-height: 1.6;
+    }
+    
+    [data-testid="stSidebar"] strong {
+        color: #c4b5fd;
+    }
+    
+    /* Dividers */
+    [data-testid="stSidebar"] hr {
+        border-color: rgba(167, 139, 250, 0.3);
+        margin: 1.5rem 0;
+    }
+    
+    /* Caption at bottom */
+    [data-testid="stSidebar"] .element-container:last-child p {
+        text-align: center;
+        color: rgba(255, 255, 255, 0.5);
+        font-size: 0.8rem;
+    }
 </style>
 """, unsafe_allow_html=True)
 
@@ -746,13 +848,16 @@ def show_insights():
 def sidebar():
     """Create sidebar navigation"""
     with st.sidebar:
-        st.image("https://via.placeholder.com/200x100/1f77b4/ffffff?text=Traffic+Prediction", 
-                use_container_width=True)
-        
-        st.title("Navigation")
+        # Custom header
+        st.markdown("""
+        <div class="sidebar-header">
+            <h1>🚦 Traffic AI</h1>
+            <p>Intelligent Prediction System</p>
+        </div>
+        """, unsafe_allow_html=True)
         
         page = st.radio(
-            "Go to",
+            "Navigation",
             ["🏠 Home", "🔮 Make Prediction", "📊 Explore Data", 
              "🎯 Model Performance", "💡 Insights"],
             label_visibility="collapsed"

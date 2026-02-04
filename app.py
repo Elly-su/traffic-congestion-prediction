@@ -204,7 +204,7 @@ def show_prediction_page():
             "Select Date",
             value=datetime.now().date(),
             min_value=datetime(2020, 1, 1).date(),
-            max_value=datetime(2025, 12, 31).date()
+            max_value=datetime(2030, 12, 31).date()
         )
         
         pred_time = st.time_input(

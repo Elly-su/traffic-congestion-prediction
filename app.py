@@ -237,18 +237,10 @@ def show_home_page():
                 unsafe_allow_html=True)
     st.markdown("### Data-Driven Traffic Management Using Machine Learning")
 
-    current_hour = datetime.now().hour
-    if 6 <= current_hour < 12:
-        greeting = "Good morning"
-    elif 12 <= current_hour < 18:
-        greeting = "Good afternoon"
-    else:
-        greeting = "Good evening"
-
     st.markdown(
-        f"""
+        """
         <div class="intro-card">
-            <h4>{greeting}! 👋 Here's your traffic snapshot.</h4>
+            <h4>Welcome! 👋 Here's your traffic snapshot.</h4>
             <p>Use the quick metrics below for a fast overview, then head to <strong>Make Prediction</strong> if you need a road-level estimate for a specific time window.</p>
         </div>
         """,

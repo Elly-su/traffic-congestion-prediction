@@ -34,6 +34,11 @@ st.set_page_config(
 # Custom CSS for better styling
 st.markdown("""
 <style>
+    .block-container {
+        padding-top: 2rem;
+        padding-bottom: 2rem;
+    }
+
     .main-header {
         font-size: 3rem;
         font-weight: bold;
@@ -49,6 +54,60 @@ st.markdown("""
         color: white;
         box-shadow: 0 4px 6px rgba(0,0,0,0.1);
     }
+
+    .intro-card {
+        background: linear-gradient(135deg, #eff6ff 0%, #eef2ff 100%);
+        border: 1px solid #dbeafe;
+        border-radius: 14px;
+        padding: 1.1rem 1.2rem;
+        margin: 0.8rem 0 1.2rem 0;
+    }
+
+    .intro-card h4 {
+        margin: 0 0 0.35rem 0;
+        color: #1e3a8a;
+        font-size: 1.05rem;
+    }
+
+    .intro-card p {
+        margin: 0;
+        color: #334155;
+        line-height: 1.55;
+    }
+
+    .human-note {
+        background: #f8fafc;
+        border-left: 4px solid #38bdf8;
+        border-radius: 8px;
+        padding: 0.8rem 1rem;
+        color: #334155;
+        margin-top: 0.7rem;
+        margin-bottom: 0.3rem;
+    }
+
+    .action-list {
+        background: #ffffff;
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+        padding: 1rem 1.1rem;
+        box-shadow: 0 2px 10px rgba(15, 23, 42, 0.04);
+    }
+
+    .action-list h4 {
+        margin: 0 0 0.6rem 0;
+        color: #0f172a;
+    }
+
+    .action-list ul {
+        margin: 0;
+        padding-left: 1.1rem;
+    }
+
+    .action-list li {
+        margin: 0.35rem 0;
+        color: #334155;
+    }
+
     .prediction-box {
         border: 2px solid #1f77b4;
         border-radius: 10px;
@@ -177,6 +236,24 @@ def show_home_page():
     st.markdown('<h1 class="main-header">🚦 Urban Traffic Prediction Dashboard</h1>', 
                 unsafe_allow_html=True)
     st.markdown("### Data-Driven Traffic Management Using Machine Learning")
+
+    current_hour = datetime.now().hour
+    if 6 <= current_hour < 12:
+        greeting = "Good morning"
+    elif 12 <= current_hour < 18:
+        greeting = "Good afternoon"
+    else:
+        greeting = "Good evening"
+
+    st.markdown(
+        f"""
+        <div class="intro-card">
+            <h4>{greeting}! 👋 Here's your traffic snapshot.</h4>
+            <p>Use the quick metrics below for a fast overview, then head to <strong>Make Prediction</strong> if you need a road-level estimate for a specific time window.</p>
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
     
     st.markdown("---")
     
@@ -217,6 +294,31 @@ def show_home_page():
                 delta="hourly records"
             )
         
+        st.markdown("---")
+
+        st.markdown(
+            """
+            <div class="action-list">
+                <h4>🧭 Recommended next steps</h4>
+                <ul>
+                    <li>Open <strong>Make Prediction</strong> to test upcoming peak-hour scenarios.</li>
+                    <li>Use <strong>Explore Data</strong> to compare weekday vs weekend traffic behavior.</li>
+                    <li>Check <strong>Model Performance</strong> before using outputs for planning decisions.</li>
+                </ul>
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
+
+        st.markdown(
+            """
+            <div class="human-note">
+                💡 Tip: Treat predictions as decision support. Combine them with real-time incidents, weather alerts, and event schedules.
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
+
         st.markdown("---")
         
         # Project overview

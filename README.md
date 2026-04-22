@@ -2,6 +2,12 @@
 
 A comprehensive machine learning solution for predicting urban traffic congestion using real-world data. This project demonstrates the complete data science workflow from data collection through model deployment, achieving 75% prediction accuracy (R² = 0.75) and 82% congestion classification accuracy.
 
+## 🌐 Live Demo
+
+👉 **[traffic-congestion-prediction.streamlit.app](https://traffic-congestion-prediction-fzpscpg8jgrj96jdb9v8rf.streamlit.app/)**
+
+Hosted on Streamlit Cloud — no install needed to try the dashboard.
+
 ## 🎯 Quick Start
 
 ```bash
@@ -18,20 +24,21 @@ python src/model_evaluation.py
 
 ## 🎮 Interactive Dashboard
 
-**NEW!** Launch the interactive web dashboard for real-time predictions and data exploration:
+Launch the interactive web dashboard locally:
 
 ```bash
 streamlit run app.py
 ```
 
 **Dashboard Features:**
-- 🔮 **Make Predictions**: Enter conditions and get instant traffic forecasts
-- 📊 **Explore Data**: Interactive charts with filters and time series analysis
-- 🎯 **Model Performance**: Compare all models with visualizations
-- 💡 **Insights**: Key findings and actionable recommendations
-- 📱 **Responsive Design**: Modern UI with smooth interactions
+- 🔮 **Make Predictions** — enter weather, event, and time conditions for instant traffic forecasts
+- 📊 **Explore Data** — filterable charts, hourly/daily patterns, and weather impact
+- 🎯 **Model Performance** — side-by-side regression & classification metrics with feature importance
+- 💡 **Insights** — rush-hour, weather, and planning recommendations
 
-**Access at**: `http://localhost:8501` after running the command above
+**Design:** Premium UI built with a custom Inter + Space Grotesk design system, indigo/violet palette, animated hero, lifted metric cards, and a unified Plotly theme. Fully responsive with a polished dark sidebar.
+
+**Access at:** `http://localhost:8501` after running the command above, or try the [live demo](https://traffic-congestion-prediction-fzpscpg8jgrj96jdb9v8rf.streamlit.app/).
 
 ## 📈 Visualizations
 
@@ -66,18 +73,34 @@ streamlit run app.py
 ## 📂 Project Structure
 
 ```
-traffic_congestion_prediction/
+traffic-congestion-prediction/
 ├── app.py                  # 🎮 Interactive Streamlit dashboard
-├── dashboard_utils.py      # Dashboard helper functions
-├── src/                    # Python modules
-├── data/                   # Raw and processed datasets
-├── models/                 # Trained ML models
-├── visualizations/         # Generated plots (15+ charts)
-├── Datasets/              # All datasets with documentation
-├── README.md              # This file
-├── REPORT_EXECUTIVE.md    # 5-page executive summary
-└── REPORT.md              # 30-page technical report
+├── dashboard_utils.py      # Model loading, feature engineering, helpers
+├── requirements.txt        # Python dependencies
+├── .streamlit/
+│   └── config.toml         # Theme & server config (premium palette)
+├── src/                    # Pipeline modules
+│   ├── data_collection.py
+│   ├── data_preprocessing.py
+│   ├── exploratory_analysis.py
+│   ├── model_training.py
+│   ├── model_evaluation.py
+│   └── utils.py
+├── Datasets/               # Raw + train/val/test CSVs + DATASETS_INFO.md
+├── data/processed/         # Intermediate processed data
+├── models/                 # Trained .pkl models + result CSVs
+├── visualizations/         # 15 generated charts (PNG)
+├── REPORT_EXECUTIVE.md     # 5-page executive summary
+├── REPORT.md               # 30-page technical report
+└── README.md               # This file
 ```
+
+## 🛠️ Tech Stack
+
+- **App:** Streamlit, Plotly, custom CSS design system (Inter + Space Grotesk)
+- **ML:** scikit-learn (Random Forest, Gradient Boosting, Ridge, Lasso, Linear/Logistic Regression, SVM)
+- **Data:** pandas, numpy; UCI Traffic volume + Open-Meteo weather API
+- **Deployment:** Streamlit Cloud
 
 ## 🚀 Features
 
